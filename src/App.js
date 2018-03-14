@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 const App = () => (
     <div>
@@ -11,19 +11,43 @@ const App = () => (
 const Header = () => (
     <header>
         <h1>My Contacts</h1>
+
+        <nav>
+            <ul>
+                <li>
+                    <Link to="/">Home</Link>
+                </li>
+                <li>
+                    <Link to="/contacts">Contacts</Link>
+                </li>
+            </ul>
+        </nav>
+
         <Route exact path="/" component={Welcome} />
         <Route path="/contacts" component={Contacts} />
     </header>
 );
 
-const Welcome = () => <h1>Welcome to the contact app!!</h1>;
+const Welcome = ({ match }) => <h1>Welcome to the contact app!!</h1>;
 
-const Contacts = () => (
-    <ul>
-        <li>Rock</li>
-        <li>Lynn</li>
-        <li>Nicolas</li>
-    </ul>
+const Contacts = ({ match }) => (
+    <div>
+        <ul>
+            <li>
+                <Link to="/contacts/Rock">Rock</Link>
+            </li>
+            <li>
+                <Link to="/contacts/Lynn">Lynn</Link>
+            </li>
+            <li>
+                <Link to="/contacts/Nicolas">Nicolas</Link>
+            </li>
+        </ul>
+        <Route exact path={`${match.path}`} render={() => <h3>Please select a contacts</h3>} />
+        <Route path={`${match.path}/:contactName`} component={Contact} />
+    </div>
 );
+
+const Contact = ({ match }) => `Your Friends name is ${match.params.contactName}`;
 
 export default App;
